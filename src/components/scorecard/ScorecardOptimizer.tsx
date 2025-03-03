@@ -18,8 +18,9 @@ import {
   PieChart,
   FlaskConical,
 } from "lucide-react";
+import RunAIOptimization from "./RunAIOptimization";
 import MLCore from "./MLCore";
-import BackendIntegration from "./BackendIntegration";
+import MLBackendIntegration from "./MLBackendIntegration";
 import DatasetDownloader from "./DatasetDownloader";
 import ShapValueExplainer from "./ShapValueExplainer";
 import ModelPerformanceMetrics from "./ModelPerformanceMetrics";
@@ -335,10 +336,10 @@ const ScorecardOptimizer = () => {
         </h1>
         <div className="flex items-center space-x-2">
           {!isOptimizing && !optimizationResult && (
-            <Button onClick={startOptimization}>
-              <Brain className="mr-2 h-4 w-4" />
-              Run AI Optimization
-            </Button>
+            <RunAIOptimization
+              onOptimizationComplete={generateOptimizationResults}
+              useLargeDataset={useLargeDataset}
+            />
           )}
           {optimizationResult && activeTab === "recommended" && (
             <Button onClick={applyRecommendedWeights}>
@@ -821,7 +822,7 @@ const ScorecardOptimizer = () => {
                 <MLCore />
               </div>
               <div className="mt-6">
-                <BackendIntegration
+                <MLBackendIntegration
                   onTrainingComplete={(results) => {
                     // Use the results from the backend training
                     if (results && results.weights) {

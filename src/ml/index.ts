@@ -18,6 +18,7 @@ export function initializeMLPipeline() {
   const { ModelTrainer } = require("./modelTrainer");
   const { ModelExplainer } = require("./modelExplainer");
   const { RealTimeScorer } = require("./realTimeScorer");
+  const { ScoreOptimizer } = require("./scoreOptimizer");
 
   // Define feature names
   const featureNames = [
@@ -66,7 +67,7 @@ export function initializeMLPipeline() {
   explainer.setupExplainers(sampleData);
 
   // Create score optimizer
-  const optimizer = trainer.createScoreOptimizer();
+  const optimizer = new ScoreOptimizer();
 
   // Create real-time scorer
   const scorer = new RealTimeScorer(

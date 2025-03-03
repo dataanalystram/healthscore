@@ -33,7 +33,7 @@ interface ABTestConfig {
 }
 
 export class ScoreOptimizer {
-  private featureWeights: FeatureWeights = {};
+  featureWeights: FeatureWeights = {};
   private abTestGroups: { [testName: string]: ABTestConfig } = {};
   private optimizationHistory: any[] = [];
 
@@ -96,7 +96,7 @@ export class ScoreOptimizer {
 
       return finalScore;
     } catch (e) {
-      console.error(`Error calculating health score: ${e}`);
+      console.error("Error calculating health score: " + e);
       return 50.0; // Return default score on error
     }
   }
@@ -146,11 +146,15 @@ export class ScoreOptimizer {
       this.abTestGroups[testName] = testConfig;
 
       console.log(
-        `A/B test '${testName}' set up with ${variants.length} variants`,
+        "A/B test '" +
+          testName +
+          "' set up with " +
+          variants.length +
+          " variants",
       );
       return testConfig;
     } catch (e) {
-      console.error(`Error setting up A/B test: ${e}`);
+      console.error("Error setting up A/B test: " + e);
       return null;
     }
   }
@@ -162,14 +166,14 @@ export class ScoreOptimizer {
     try {
       // Check if test exists
       if (!(testName in this.abTestGroups)) {
-        throw new Error(`A/B test '${testName}' not found`);
+        throw new Error("A/B test '" + testName + "' not found");
       }
 
       const testConfig = this.abTestGroups[testName];
 
       // Deterministic assignment based on customer ID
       // Create hash of customer ID and test name
-      const hashInput = `${customerId}:${testName}`;
+      const hashInput = customerId + ":" + testName;
       let hashValue = 0;
       for (let i = 0; i < hashInput.length; i++) {
         hashValue = (hashValue << 5) - hashValue + hashInput.charCodeAt(i);
@@ -196,7 +200,7 @@ export class ScoreOptimizer {
       // Fallback to first variant if something went wrong
       return testConfig.variants[0];
     } catch (e) {
-      console.error(`Error assigning variant: ${e}`);
+      console.error("Error assigning variant: " + e);
 
       // Return default variant on error
       if (
@@ -221,7 +225,7 @@ export class ScoreOptimizer {
     try {
       // Check if test exists
       if (!(testName in this.abTestGroups)) {
-        throw new Error(`A/B test '${testName}' not found`);
+        throw new Error("A/B test '" + testName + "' not found");
       }
 
       const testConfig = this.abTestGroups[testName];
@@ -229,7 +233,7 @@ export class ScoreOptimizer {
       // Check if variant exists
       if (!(variantName in testConfig.results)) {
         throw new Error(
-          `Variant '${variantName}' not found in test '${testName}'`,
+          "Variant '" + variantName + "' not found in test '" + testName + "'",
         );
       }
 
@@ -240,7 +244,7 @@ export class ScoreOptimizer {
 
       return true;
     } catch (e) {
-      console.error(`Error recording conversion: ${e}`);
+      console.error("Error recording conversion: " + e);
       return false;
     }
   }
@@ -252,7 +256,7 @@ export class ScoreOptimizer {
     try {
       // Check if test exists
       if (!(testName in this.abTestGroups)) {
-        throw new Error(`A/B test '${testName}' not found`);
+        throw new Error("A/B test '" + testName + "' not found");
       }
 
       const testConfig = this.abTestGroups[testName];
@@ -364,7 +368,7 @@ export class ScoreOptimizer {
         analysis,
       };
     } catch (e) {
-      console.error(`Error analyzing A/B test results: ${e}`);
+      console.error("Error analyzing A/B test results: " + e);
       return { error: String(e) };
     }
   }
@@ -378,7 +382,9 @@ export class ScoreOptimizer {
     nTrials = 100,
   ): FeatureWeights {
     try {
-      console.log(`Running Bayesian optimization with ${nTrials} trials...`);
+      console.log(
+        "Running Bayesian optimization with " + nTrials + " trials...",
+      );
 
       // In a real implementation, this would use a Bayesian optimization library
       // For this demo, we'll simulate the optimization process
@@ -435,7 +441,7 @@ export class ScoreOptimizer {
       return bestWeights;
     } catch (e) {
       console.error(
-        `Error optimizing weights with Bayesian optimization: ${e}`,
+        "Error optimizing weights with Bayesian optimization: " + e,
       );
       return this.featureWeights;
     }
@@ -482,7 +488,7 @@ export class ScoreOptimizer {
         sampleCode: this.getRLSampleCode(),
       };
     } catch (e) {
-      console.error(`Error generating RL recommendation: ${e}`);
+      console.error("Error generating RL recommendation: " + e);
       return {
         error: String(e),
         recommendation: {
