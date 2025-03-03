@@ -18,6 +18,8 @@ import {
   PieChart,
   FlaskConical,
 } from "lucide-react";
+import MLCore from "./MLCore";
+import BackendIntegration from "./BackendIntegration";
 import DatasetDownloader from "./DatasetDownloader";
 import ShapValueExplainer from "./ShapValueExplainer";
 import ModelPerformanceMetrics from "./ModelPerformanceMetrics";
@@ -814,6 +816,20 @@ const ScorecardOptimizer = () => {
               </div>
               <div className="mt-6">
                 <AdvancedAlgorithmInfo />
+              </div>
+              <div className="mt-6">
+                <MLCore />
+              </div>
+              <div className="mt-6">
+                <BackendIntegration
+                  onTrainingComplete={(results) => {
+                    // Use the results from the backend training
+                    if (results && results.weights) {
+                      // Trigger optimization with the new weights
+                      startOptimization();
+                    }
+                  }}
+                />
               </div>
             </>
           )}
